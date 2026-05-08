@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'; min-height: 15.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-CN"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;饼干占卜屋 Cookie Oracle&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes bounce-soft { 0%, 100% { transform: translateY(-5%); } 50% { transform: translateY(0); } }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.animate-bounce-soft { animation: bounce-soft 3s infinite ease-in-out; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.animate-fade-in-up { animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 自定义滚动条，契合活泼风格 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar { width: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-track { background: #FFF3E0; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb { background: #FFCC80; border-radius: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-[#FFFBF5] text-amber-950 min-h-screen overflow-x-hidden font-sans selection:bg-orange-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="root"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const { useState } = React;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 知识库：塔罗牌 (融合专业词汇与白话转译) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const TAROT_DECK = [</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 0, name: "0. 愚者 (The Fool)", imageUrl: "https://image.pollinations.ai/prompt/The%20Fool%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3000", up: "【风元素】直觉牵引，归零心态。抛开以往经验，凭第一反应去冒险。", rev: "【过度外放】鲁莽行事，缺乏对现实边界的敬畏，容易踩空。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 1, name: "I. 魔术师 (The Magician)", imageUrl: "https://image.pollinations.ai/prompt/The%20Magician%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3001", up: "【显化法则】资源调配力满分。你手头的条件已具备，立刻执行你的想法。", rev: "【能量阻滞】空有创意却没有落地，或者被表象与话术所蒙蔽。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 2, name: "II. 女祭司 (High Priestess)", imageUrl: "https://image.pollinations.ai/prompt/The%20High%20Priestess%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3002", up: "【水元素】潜意识觉醒，静默观察。不要急于表态，答案藏在你的直觉里。", rev: "【直觉屏蔽】抗拒内心真实的感受，被表面信息扰乱了判断。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 3, name: "III. 皇后 (The Empress)", imageUrl: "https://image.pollinations.ai/prompt/The%20Empress%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3003", up: "【金星能量】无条件的滋养与丰盛。事情正处于一个容易获得收获和赞美的滋润期。", rev: "【过度索取】令人窒息的控制欲，或者在物质、情感上的挥霍无度。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 4, name: "IV. 皇帝 (The Emperor)", imageUrl: "https://image.pollinations.ai/prompt/The%20Emperor%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3004", up: "【白羊座能量】构建秩序，确立边界。你需要用理性和规则来接管这件事情。", rev: "【权力滥用】刻板僵化，听不进他人意见，独断专行带来了反噬。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 5, name: "V. 教皇 (The Hierophant)", imageUrl: "https://image.pollinations.ai/prompt/The%20Hierophant%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3005", up: "【体系归属】遵循传统范式。寻求专业人士的指引，按大众认可的路径走最安全。", rev: "【打破常规】反叛教条，不愿意妥协，但目前单打独斗会很辛苦。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 6, name: "VI. 恋人 (The Lovers)", imageUrl: "https://image.pollinations.ai/prompt/The%20Lovers%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3006", up: "【双子座能量】深度联结与价值观共振。这是一个关键的交叉路口，请遵从内心的选择。", rev: "【能量剥离】关系出现失衡，或者你在逃避一个必须做出的取舍。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 7, name: "VII. 战车 (The Chariot)", imageUrl: "https://image.pollinations.ai/prompt/The%20Chariot%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3007", up: "【巨蟹座能量】驾驭内在矛盾。只要你咬紧牙关，集中注意力，就能强行突破眼前的阻碍。", rev: "【情绪失控】动能过载，方向感迷失。受困于自我怀疑或外部拉扯。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 8, name: "VIII. 力量 (Strength)", imageUrl: "https://image.pollinations.ai/prompt/Strength%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3008", up: "【火元素】以柔克刚的耐力。不要硬碰硬，用包容和耐心去驯服当下的困难。", rev: "【内在匮乏】被本能和情绪驱使，自我怀疑导致你失去了对局面的掌控。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 9, name: "IX. 隐士 (The Hermit)", imageUrl: "https://image.pollinations.ai/prompt/The%20Hermit%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3009", up: "【处女座能量】主动降噪，向内探寻。暂时切断无效社交，答案在你静下心来复盘时。", rev: "【过度闭塞】画地为牢的孤立，沉溺于钻牛角尖，脱离了现实环境。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 10, name: "X. 命运之轮 (Wheel of Fortune)", imageUrl: "https://image.pollinations.ai/prompt/Wheel%20of%20Fortune%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3010", up: "【木星显化】不可抗的周期流转。外部的转机已经到来，你只需顺水推舟。", rev: "【周期停滞】抗拒命运的推力，在低谷期盲目挣扎，白白消耗力气。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 11, name: "XI. 正义 (Justice)", imageUrl: "https://image.pollinations.ai/prompt/Justice%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3011", up: "【风元素】业力清算，绝对平衡。一分耕耘一分收获，用最客观的视角去衡量利弊。", rev: "【天平倾斜】偏见主导了决策，或者试图逃避某件应该承担后果的事。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 12, name: "XII. 倒吊人 (The Hanged Man)", imageUrl: "https://image.pollinations.ai/prompt/The%20Hanged%20Man%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3012", up: "【海王星能量】视角的彻底翻转。眼前的停滞是有意义的，接受短暂的牺牲以换取顿悟。", rev: "【无效内耗】毫无价值的妥协与被动，把自己困在受害者心态里。", energy: "negative" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 13, name: "XIII. 死神 (Death)", imageUrl: "https://image.pollinations.ai/prompt/Death%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3013", up: "【天蝎座能量】旧形态的彻底剥落。一个周期不可逆地结束了，不破不立。", rev: "【抗拒代谢】执念过深，拖着沉没成本不愿放手，反而导致了持续的痛苦。", energy: "negative" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 14, name: "XIV. 节制 (Temperance)", imageUrl: "https://image.pollinations.ai/prompt/Temperance%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3014", up: "【炼金术过程】跨越极端的动态调和。不要急于求成，将不同的资源或情绪慢慢融合。", rev: "【能量失衡】情绪剧烈摇摆，或者过度投入某一方导致系统崩盘。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 15, name: "XV. 恶魔 (The Devil)", imageUrl: "https://image.pollinations.ai/prompt/The%20Devil%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3015", up: "【土元素】直视欲望底色。被深深吸引或被利益强绑定，承认自己的功利心。", rev: "【挣脱枷锁】觉醒的时刻，你正在斩断病态的羁绊或某个长期的恶习。", energy: "negative" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 16, name: "XVI. 高塔 (The Tower)", imageUrl: "https://image.pollinations.ai/prompt/The%20Tower%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3016", up: "【火星摧毁力】虚假基石的坍塌。突如其来的剧变，虽然震荡，但击碎了不切实际的幻想。", rev: "【危机延迟】危楼摇摇欲坠你却死撑不离，对即将到来的改变充满恐惧。", energy: "negative" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 17, name: "XVII. 星星 (The Star)", imageUrl: "https://image.pollinations.ai/prompt/The%20Star%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3017", up: "【水瓶座能量】风暴后的深层疗愈。目标清晰可见，保持纯粹的信念，希望正在路上。", rev: "【愿景模糊】失去了信念的锚点，被眼前的短期挫折遮蔽了长远的星光。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 18, name: "XVIII. 月亮 (The Moon)", imageUrl: "https://image.pollinations.ai/prompt/The%20Moon%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3018", up: "【双鱼座能量】潜意识的深渊。真相被迷雾笼罩，不安与焦虑的情绪正在投射。", rev: "【迷雾消散】看清了潜伏在暗处的恐惧，隐藏的问题终于浮出水面。", energy: "negative" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 19, name: "XIX. 太阳 (The Sun)", imageUrl: "https://image.pollinations.ai/prompt/The%20Sun%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3019", up: "【太阳系核心】毫无保留的生命力显化。极致的绽放、坦诚与喜悦，全方位的成功。", rev: "【光芒虚耗】用力过猛导致的疲惫，或者快乐被打了一些折扣，但底色依然是好的。", energy: "positive" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 20, name: "XX. 审判 (Judgement)", imageUrl: "https://image.pollinations.ai/prompt/Judgement%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3020", up: "【冥王星觉醒】灵魂层面的召唤。过去的努力面临最终结算，你将获得一次浴火重生的机会。", rev: "【抗拒质变】听不到内心的呼唤，或者不愿为过去的错误买单，拒绝翻篇。", energy: "neutral" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{ id: 21, name: "XXI. 世界 (The World)", imageUrl: "https://image.pollinations.ai/prompt/The%20World%20tarot%20card,%20cute%20ghibli%20style,%20warm%20colors?width=400&amp;height=600&amp;nologo=true&amp;seed=3021", up: "【土星完满】阶段性旅程的大圆满。格局彻底打开，一切资源完成了完美的闭环。", rev: "【临门一脚】还差一点点才能完成整合，视野受限导致你看不到全局的进展。", energy: "positive" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 知识库：小六壬 (专业词汇同步) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const LIUREN_DECK = {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>1: { name: "大安", type: "吉", element: "木", desc: "稳定、平安", meaning: "身不动、事安康、求财有、寻人快、所谋之事平顺。" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>2: { name: "留连", type: "凶", element: "水", desc: "停滞、纠缠", meaning: "事难成、求财迟、寻人不在、主官司口舌、婚姻有阻碍。" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>3: { name: "速喜", type: "吉", element: "火", desc: "快速、喜庆", meaning: "有意外之喜、事情发展快、主财运、婚姻成功、行人立即到。" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>4: { name: "赤口", type: "凶", element: "金", desc: "是非、冲突", meaning: "容易惹口舌、伤灾、官非、主凶、办事不顺。" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>5: { name: "小吉", type: "吉", element: "木", desc: "吉利、贵人", meaning: "贵人提携、行人相聚、办事顺利、失物可寻。" },</p>
+<p class="p1"><span class="Apple-converted-space">          </span>6: { name: "空亡", type: "凶", element: "土", desc: "凶险、失落", meaning: "财物亏空、人失无踪、谋事不吉、事多无结果。" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function App() {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const [view, setView] = useState('home');<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const [tarotCards, setTarotCards] = useState([]);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const [isDrawingTarot, setIsDrawingTarot] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const [numbers, setNumbers] = useState(['', '', '']);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const [liurenResult, setLiurenResult] = useState(null);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>// --- 重构：动态塔罗研判引擎 (基于“愚者之旅”的生命周期算法) ---</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const generateTarotSummary = (cards) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (cards.length !== 3) return "";</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 提取关键参数</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const futureCard = cards[2];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isFutureReversed = futureCard.isReversed;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const reversedCount = cards.filter(c =&gt; c.isReversed).length;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 计算牌阵的“平均位阶”，推断处于愚者之旅的哪个阶段 (0-7 物质基础, 8-14 心理冲突, 15-21 精神完满)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const avgId = (cards[0].card.id + cards[1].card.id + cards[2].card.id) / 3;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let stageAnalysis = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (avgId &lt; 7.5) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>stageAnalysis = "整体牌阵的能量层级还处于『愚者之旅』的启蒙与建设期。这意味着事情的基础架构正在搭建，现实层面的资源调配（人脉、资金、规则）是当前的重心。";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (avgId &lt; 14.5) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>stageAnalysis = "你当前抽出的牌多属于『愚者之旅』的中段。这代表事情已经进入了深水区，你面临的不再是外部的条件限制，而是内在价值观的拉扯、人际的磨合与情绪的代谢。";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>stageAnalysis = "高阶牌面的密集出现，暗示这件事情已逼近『愚者之旅』的终点。这不仅是一个项目或关系的走向，更牵涉到你个人格局的跃迁与深层业力的清算。";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let energyAnalysis = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (reversedCount === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>energyAnalysis = "能量流转呈现出顺畅的正位势能。这表明你的显化能力极强，潜意识的渴望与现实的行动达成了一致，顺势而为即可。";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (reversedCount === 1) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>energyAnalysis = "牌面存在局部的能量内耗。某一个环节（往往是你刻意逃避的盲区）正在牵扯你的精力，需要在微观层面进行调整。";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>energyAnalysis = "逆位牌的频出，投射出强烈的环境阻力与自我设限。继续用蛮力推进会导致能量的枯竭，你需要一次彻底的认知翻转。";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const actionAdvice = `聚焦于代表结果的【${futureCard.card.name}】。${isFutureReversed ? '它的逆位属性表明，外部的结果会被延迟，系统建议你目前的核心动作是“向内收缩与复盘”。' : '正位的特质暗示着答案即将清晰显化，建议你卸下防御，“大胆向外拓展”。'} 去体会这股特质，它是破局的关键密钥。`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return `【旅程阶段】\n${stageAnalysis}\n\n【能量流向】\n${energyAnalysis}\n\n【专属破局点】\n${actionAdvice}`;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const drawTarotCards = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setIsDrawingTarot(true);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setTarotCards([]);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>let deck = [...TAROT_DECK];</p>
+<p class="p1"><span class="Apple-converted-space">              </span>let drawn = [];</p>
+<p class="p1"><span class="Apple-converted-space">              </span>const positions = ["过去·因果起因", "现状·能量汇聚", "未来·潜意识显化"];</p>
+<p class="p1"><span class="Apple-converted-space">              </span>for (let i = 0; i &lt; 3; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const randomIndex = Math.floor(Math.random() * deck.length);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const isReversed = Math.random() &gt; 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawn.push({</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>position: positions[i],</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>card: deck[randomIndex],</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>isReversed: isReversed</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>deck.splice(randomIndex, 1);</p>
+<p class="p1"><span class="Apple-converted-space">              </span>}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>setTarotCards(drawn);</p>
+<p class="p1"><span class="Apple-converted-space">              </span>setIsDrawingTarot(false);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}, 1000);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const calculateLiuren = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const num1 = parseInt(numbers[0]);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const num2 = parseInt(numbers[1]);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const num3 = parseInt(numbers[2]);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>alert("请输入三个有效数字哦！");</p>
+<p class="p1"><span class="Apple-converted-space">              </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let resultIndex = (num1 + num2 + num3 - 2) % 6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (resultIndex === 0) resultIndex = 6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (resultIndex &lt; 0) resultIndex += 6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setLiurenResult(LIUREN_DECK[resultIndex]);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const TarotCardImage = ({ card, isReversed }) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [imgError, setImgError] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [imgLoaded, setImgLoaded] = useState(false);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className={`relative w-44 h-[300px] md:w-52 md:h-[350px] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] mb-6 border-4 border-orange-100 bg-[#FFF3E0] transition-transform duration-700 ${isReversed ? 'rotate-180' : ''}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{!imgLoaded &amp;&amp; !imgError &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="absolute inset-0 flex flex-col items-center justify-center p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-3xl animate-bounce-soft mb-2"&gt;🍪&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-orange-400 text-xs tracking-widest uppercase font-bold"&gt;烘焙中...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{!imgError ? (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;img src={card.imageUrl} alt={card.name} onLoad={() =&gt; setImgLoaded(true)} onError={() =&gt; { setImgError(true); setImgLoaded(true); }} className={`w-full h-full object-cover transition-opacity duration-700 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="w-full h-full flex flex-col items-center justify-center p-4 bg-[#FFE0B2]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-orange-300 mb-2 text-5xl"&gt;🥨&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-orange-500 text-xs tracking-widest uppercase font-bold"&gt;画面走丢了&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const renderHome = () =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="flex flex-col items-center justify-center min-h-screen p-6 relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{/* 背景装饰图案 */}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="absolute top-10 left-10 text-4xl opacity-20"&gt;✨&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="absolute bottom-20 right-10 text-4xl opacity-20"&gt;🍀&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">              </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="text-center mb-14"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-wide text-orange-600 drop-shadow-sm"&gt;饼干占卜屋 &lt;span className="text-xl ml-2 font-normal text-orange-400"&gt;Cookie Oracle&lt;/span&gt;&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="text-orange-900/60 max-w-sm mx-auto font-medium"&gt;拿一块饼干，抽一张牌。用最轻松的方式，洞察潜意识的秘密。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="grid md:grid-cols-2 gap-8 w-full max-w-3xl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onClick={() =&gt; setView('tarot')} className="group flex flex-col items-center p-8 bg-white/80 backdrop-blur-sm rounded-[2rem] border-2 border-orange-100 shadow-xl hover:shadow-orange-200/50 hover:border-orange-300 transition-all hover:-translate-y-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform"&gt;🎴&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;h2 className="text-2xl font-bold mb-2 text-orange-800"&gt;塔罗排阵&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-orange-900/60 text-sm font-medium"&gt;透视愚者之旅，破译潜意识的能量流向。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onClick={() =&gt; setView('liuren')} className="group flex flex-col items-center p-8 bg-white/80 backdrop-blur-sm rounded-[2rem] border-2 border-orange-100 shadow-xl hover:shadow-orange-200/50 hover:border-orange-300 transition-all hover:-translate-y-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform"&gt;🎲&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;h2 className="text-2xl font-bold mb-2 text-orange-800"&gt;小六壬局&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-orange-900/60 text-sm font-medium"&gt;随心三个数字，快速获取传统的吉凶断语。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const renderTarot = () =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="min-h-screen p-4 md:p-8 max-w-6xl mx-auto flex flex-col relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;header className="flex items-center justify-between py-4 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onClick={() =&gt; { setView('home'); setTarotCards([]); }} className="flex items-center text-orange-600/60 hover:text-orange-800 transition-colors font-bold px-4 py-2 bg-white rounded-full shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span className="mr-1"&gt;←&lt;/span&gt; 返回大厅</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 className="text-lg font-extrabold text-orange-800 tracking-widest bg-white px-6 py-2 rounded-full shadow-sm"&gt;塔罗排阵&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="w-24"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex-1 flex flex-col items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{tarotCards.length === 0 ? (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="flex flex-col items-center justify-center flex-1 w-full max-w-md animate-fade-in-up"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="bg-white p-10 rounded-[2.5rem] shadow-xl border-2 border-orange-50 text-center w-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="text-5xl mb-6"&gt;💭&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;p className="text-orange-900/70 mb-8 font-medium leading-relaxed"&gt;在心中默念你的困惑。&lt;br/&gt;点击下方，让潜意识通过卡牌显化。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button onClick={drawTarotCards} disabled={isDrawingTarot} className="w-full py-4 bg-orange-400 hover:bg-orange-500 text-white rounded-2xl text-lg font-bold shadow-[0_6px_0_rgb(234,88,12)] hover:shadow-[0_4px_0_rgb(234,88,12)] hover:translate-y-[2px] transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{isDrawingTarot ? '正在洗牌...' : '抽取饼干卡牌'}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="w-full animate-fade-in-up pb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex justify-center mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button onClick={drawTarotCards} className="px-6 py-3 bg-white text-orange-600 font-bold rounded-full shadow-md border border-orange-100 hover:bg-orange-50 transition-colors"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>↻ 再抽一次</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch gap-8 mb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{tarotCards.map((item, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div key={idx} className="flex flex-col items-center bg-white p-6 rounded-[2rem] shadow-lg border-2 border-orange-50 w-full max-w-sm relative mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;div className="absolute -top-4 bg-orange-400 text-white text-xs px-4 py-1.5 rounded-full z-10 font-bold tracking-widest shadow-sm"&gt;{item.position}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;TarotCardImage card={item.card} isReversed={item.isReversed} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;h3 className="text-lg font-extrabold text-orange-900 mb-1 text-center h-12 flex items-center"&gt;{item.card.name}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;div className={`text-xs mb-4 font-bold tracking-widest px-3 py-1 rounded-full ${item.isReversed ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-600'}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{item.isReversed ? '逆位能量' : '正位能量'}</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;div className="text-orange-900/70 text-sm leading-relaxed bg-[#FFFBF5] border border-orange-100 p-5 rounded-2xl w-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{item.isReversed ? item.card.rev : item.card.up}</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="max-w-4xl mx-auto bg-white border-2 border-orange-100 shadow-xl rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="absolute top-0 right-0 w-32 h-32 bg-orange-100 rounded-bl-full opacity-50 -z-10"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="flex items-center mb-6 text-orange-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="text-3xl mr-3"&gt;☕&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 className="text-xl font-extrabold tracking-widest"&gt;综合能量判词&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;p className="text-orange-900/80 leading-loose text-[15px] font-medium whitespace-pre-wrap"&gt;{generateTarotSummary(tarotCards)}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>const renderLiuren = () =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="min-h-screen p-4 md:p-8 max-w-5xl mx-auto flex flex-col relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;header className="flex items-center justify-between py-4 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onClick={() =&gt; { setView('home'); setLiurenResult(null); setNumbers(['','','']); }} className="flex items-center text-orange-600/60 hover:text-orange-800 transition-colors font-bold px-4 py-2 bg-white rounded-full shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;span className="mr-1"&gt;←&lt;/span&gt; 返回大厅</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 className="text-lg font-extrabold text-orange-800 tracking-widest bg-white px-6 py-2 rounded-full shadow-sm"&gt;小六壬局&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="w-24"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex-1 flex flex-col items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{!liurenResult ? (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="w-full max-w-md bg-white border-2 border-orange-50 shadow-xl rounded-[2.5rem] p-10 animate-fade-in-up"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p className="text-orange-900/60 text-sm mb-8 text-center font-bold"&gt;随意写下三个介于 1-99 之间的数字。&lt;br/&gt;万物皆有数，数中有玄机。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex justify-between gap-4 mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{[0, 1, 2].map((idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input key={idx} type="number" min="1" max="99" value={numbers[idx]} onChange={(e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const newNums = [...numbers];</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>newNums[idx] = e.target.value;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>setNumbers(newNums);</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>}} className="w-full bg-[#FFFBF5] border-2 border-orange-100 rounded-2xl py-4 text-center text-2xl font-bold text-orange-800 focus:outline-none focus:border-orange-400 focus:bg-white transition-all shadow-inner placeholder:text-orange-200" placeholder="?" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onClick={calculateLiuren} className="w-full py-4 bg-orange-400 hover:bg-orange-500 text-white rounded-2xl text-lg font-bold shadow-[0_6px_0_rgb(234,88,12)] hover:shadow-[0_4px_0_rgb(234,88,12)] hover:translate-y-[2px] transition-all"&gt;解开卦象&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="w-full animate-fade-in-up pb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;div className="flex justify-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>&lt;button onClick={() =&gt; { setLiurenResult(null); setNumbers(['','','']); }} className="px-6 py-3 bg-white text-orange-600 font-bold rounded-full shadow-md border border-orange-100 hover:bg-orange-50 transition-colors"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>↻ 重新起卦</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="grid lg:grid-cols-12 gap-8 max-w-4xl mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="lg:col-span-5 bg-white border-2 border-orange-50 shadow-xl rounded-[2.5rem] p-10 flex flex-col justify-center items-center text-center relative overflow-hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div className="absolute -right-6 -bottom-10 text-[120px] opacity-5 pointer-events-none text-orange-900"&gt;💮&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div className={`text-6xl font-extrabold mb-6 drop-shadow-sm ${liurenResult.type === '吉' ? 'text-emerald-500' : 'text-red-500'}`}&gt;{liurenResult.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div className="flex gap-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span className={`px-4 py-1.5 rounded-full text-sm font-bold tracking-widest ${liurenResult.type === '吉' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'}`}&gt;{liurenResult.type}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span className="px-4 py-1.5 rounded-full text-sm font-bold tracking-widest bg-orange-50 text-orange-800"&gt;五行 {liurenResult.element}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="lg:col-span-7 flex flex-col gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="bg-white rounded-[2rem] p-8 shadow-lg border-2 border-orange-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;h4 className="text-orange-400 font-extrabold text-sm tracking-widest mb-2"&gt;核心卦辞&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p className="text-orange-800 text-lg font-bold mb-4"&gt;{liurenResult.desc}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;div className="w-12 h-1 bg-orange-100 rounded-full mb-4"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p className="text-orange-900/70 font-medium leading-relaxed"&gt;{liurenResult.meaning}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="min-h-screen font-sans"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{view === 'home' &amp;&amp; renderHome()}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{view === 'tarot' &amp;&amp; renderTarot()}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{view === 'liuren' &amp;&amp; renderLiuren()}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const root = ReactDOM.createRoot(document.getElementById('root'));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>root.render(&lt;App /&gt;);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
